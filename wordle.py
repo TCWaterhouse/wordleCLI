@@ -1,6 +1,8 @@
 import random
 import datetime
 
+from trie import Trie
+
 
 # Ensure that the words are always shuffled the same way
 random.seed(69)
@@ -26,22 +28,29 @@ def get_supplemental_list() -> list[str]:
     return supplemental_list
 
 def get_todays_index() -> int:
+    '''Returns the index for today'''
     todays_index = (datetime.datetime.now() - datetime.datetime(1970, 1, 1)).days
     todays_index -= 19420
     return todays_index
 
-def test():
-    i = get_todays_index()
-    answers = get_answers()
-    print(i % len(answers))
+def build_search_tree(word_list: list[str]) -> Trie:
+    search_tree = Trie()
+    for word in word_list:
+        search_tree.add(word)
+    return search_tree
+
 
 class Wordle():
     def __init__(self):
-        self.answer_list = get_answer_list()
-        self.supplement_list = get_supplemental_list()
+        answer_list = get_answer_list()
         self.todays_index = get_todays_index()
-        self.todays_word = self.answer_list[self.todays_index]
+        self.todays_word = answer_list[self.todays_index % len(answer_list)]
+        word_list = answer_list.append(get_supplemental_list())
+        self.search_tree = build_search_tree(word_list)
+        #FIXME: Guesses should grab from a user file, so that it tracks play throughout the day.
         self.guesses = 0
 
-
-test()
+    #TODO: break into multiple funcs. check if correct. check if valid. check which chars are correct. 
+    # What am i returning? :/
+    def check_guess(word: str):
+        pass
