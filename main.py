@@ -15,8 +15,15 @@ def main():
             if not guess.isalpha():
                 raise Exception("Invalid characters used!")
             guess = guess.lower()
-            colours = game.check_guess(guess)
+            colours, game_over = game.check_guess(guess)
             terminal.print_guess(guess, colours)
+            if game_over:
+                if game.guesses == 1:
+                    print(f"Genius! You completed today's puzzle in {game.guesses} guess!")
+                else:
+                    print(f"Congratulations! You completed today's puzzle in {game.guesses} guesses!")
+                print("Come back tomorrow for a new puzzle!")
+                quit()
         except Exception as e:
             game.error_flag = True
             print(e)

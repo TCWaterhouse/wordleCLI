@@ -53,7 +53,7 @@ class Wordle:
         self.guesses = 0 #TODO: Guesses should grab from a user file, so that it tracks play throughout the day.
         self.error_flag = False
 
-    def check_guess(self, word: str) -> list[terminal.bg]:
+    def check_guess(self, word: str):
         '''Checks to see if guess is valid. If it is, then it returns a list of the correct 5 ANSI colour escape codes'''
         if not self.search_tree.exists(word):
             raise ValueError("Word is not valid!")
@@ -62,7 +62,7 @@ class Wordle:
 
         if word == self.todays_word:
             colours = [terminal.bg.green, terminal.bg.green, terminal.bg.green, terminal.bg.green, terminal.bg.green]
-            return colours
+            return colours, True
         else:
             colours = []
             char_list = self.get_char_list()
@@ -80,7 +80,7 @@ class Wordle:
                 else:
                     colours.append(terminal.bg.yellow)
                     char_list.remove(word[i])
-            return colours
+            return colours, False
 
     def get_char_list(self):
         char_list = []
