@@ -3,12 +3,11 @@ import datetime
 
 from trie import Trie
 from enum import Enum
+from terminal import terminal
 
 
 # Ensure that the words are always shuffled the same way
 random.seed(69)
-
-Colour = Enum("Colour", ["GREEN", "YELLOW", "GREY"])
 
 def get_answer_list() -> list[str]:
     '''Returns the answer list after doing some basic QA and shuffling'''
@@ -43,50 +42,48 @@ def build_search_tree(word_list: list[str]) -> Trie:
     return search_tree
 
 
-class Wordle():
+class Wordle:
     def __init__(self):
         answer_list = get_answer_list()
         self.todays_index = get_todays_index()
         self.todays_word = answer_list[self.todays_index % len(answer_list)]
         word_list = answer_list + get_supplemental_list()
         self.search_tree = build_search_tree(word_list)
+        self.wrong_letters = set()
         self.guesses = 0 #TODO: Guesses should grab from a user file, so that it tracks play throughout the day.
+        self.error_flag = False
 
-    def check_guess(self, word: str) -> list[Colour]:
+    def check_guess(self, word: str) -> list[terminal.bg]:
+        '''Checks to see if guess is valid. If it is, then it returns a list of the correct 5 ANSI colour escape codes'''
         if not self.search_tree.exists(word):
             raise ValueError("Word is not valid!")
         
+        self.guesses += 1
+
         if word == self.todays_word:
-            return [Colour.GREEN, Colour.GREEN, Colour.GREEN, Colour.GREEN, Colour.GREEN]
+            colours = [terminal.bg.green, terminal.bg.green, terminal.bg.green, terminal.bg.green, terminal.bg.green]
+            return colours
         else:
-            guess = []
+            colours = []
             char_list = self.get_char_list()
             for i in range(5):
-                print(char_list)
-                if word[i] == self.todays_word[i]:
-                    guess.append(Colour.GREEN)
+                if word[i] not in self.todays_word:
+                    colours.append(terminal.bg.darkgrey)
+                    self.wrong_letters.add(word[i])
                     continue
-                elif word[i] in char_list:
-                    guess.append(Colour.YELLOW)
-                    char_list.remove(word[i])
+                elif word[i] not in char_list:
+                    colours.append(terminal.bg.darkgrey)
+                    continue
+                elif word[i] == self.todays_word[i]:
+                    colours.append(terminal.bg.green)
                     continue
                 else:
-                    guess.append(Colour.GREY)
-            return guess
+                    colours.append(terminal.bg.yellow)
+                    char_list.remove(word[i])
+            return colours
 
     def get_char_list(self):
         char_list = []
         for char in self.todays_word:
             char_list.append(char)
         return char_list
-
-
-def test():
-    wordle = Wordle()
-    print(wordle.todays_word)
-    word = "llama"
-    print(word)
-    result = wordle.check_guess(word)
-    print(result)
-
-test()
