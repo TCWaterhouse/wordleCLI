@@ -2,11 +2,13 @@ import random
 import datetime
 
 from trie import Trie
+from enum import Enum
 
 
 # Ensure that the words are always shuffled the same way
 random.seed(69)
 
+Colour = Enum("Colour", ["GREEN", "YELLOW", "GREY"])
 
 def get_answer_list() -> list[str]:
     '''Returns the answer list after doing some basic QA and shuffling'''
@@ -19,9 +21,9 @@ def get_answer_list() -> list[str]:
     return answers_list
 
 def get_supplemental_list() -> list[str]:
-    '''Returns the supplemental list'''
+    '''Returns the supplement list after doing some basic QA'''
     supplemental_list = []
-    with open("data/en_5words_supplemental.txt", "r") as p:
+    with open("data/en_5words_supplement.txt", "r") as p:
         for line in p:
             supplemental_list.append(line.strip())
     supplemental_list = [word.lower() for word in supplemental_list if len(word) == 5 and word.isalpha()]
@@ -34,6 +36,7 @@ def get_todays_index() -> int:
     return todays_index
 
 def build_search_tree(word_list: list[str]) -> Trie:
+    '''Returns a search tree (Trie Object) to be used for quickly checking if guesses are valid'''
     search_tree = Trie()
     for word in word_list:
         search_tree.add(word)
@@ -45,12 +48,45 @@ class Wordle():
         answer_list = get_answer_list()
         self.todays_index = get_todays_index()
         self.todays_word = answer_list[self.todays_index % len(answer_list)]
-        word_list = answer_list.append(get_supplemental_list())
+        word_list = answer_list + get_supplemental_list()
         self.search_tree = build_search_tree(word_list)
-        #FIXME: Guesses should grab from a user file, so that it tracks play throughout the day.
-        self.guesses = 0
+        self.guesses = 0 #TODO: Guesses should grab from a user file, so that it tracks play throughout the day.
 
-    #TODO: break into multiple funcs. check if correct. check if valid. check which chars are correct. 
-    # What am i returning? :/
-    def check_guess(word: str):
-        pass
+    def check_guess(self, word: str) -> list[Colour]:
+        if not self.search_tree.exists(word):
+            raise ValueError("Word is not valid!")
+        
+        if word == self.todays_word:
+            return [Colour.GREEN, Colour.GREEN, Colour.GREEN, Colour.GREEN, Colour.GREEN]
+        else:
+            guess = []
+            char_list = self.get_char_list()
+            for i in range(5):
+                print(char_list)
+                if word[i] == self.todays_word[i]:
+                    guess.append(Colour.GREEN)
+                    continue
+                elif word[i] in char_list:
+                    guess.append(Colour.YELLOW)
+                    char_list.remove(word[i])
+                    continue
+                else:
+                    guess.append(Colour.GREY)
+            return guess
+
+    def get_char_list(self):
+        char_list = []
+        for char in self.todays_word:
+            char_list.append(char)
+        return char_list
+
+
+def test():
+    wordle = Wordle()
+    print(wordle.todays_word)
+    word = "llama"
+    print(word)
+    result = wordle.check_guess(word)
+    print(result)
+
+test()
