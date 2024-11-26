@@ -2,7 +2,6 @@ import random
 import datetime
 
 from trie import Trie
-from enum import Enum
 from terminal import terminal
 
 
@@ -50,7 +49,7 @@ class Wordle:
         word_list = answer_list + get_supplemental_list()
         self.search_tree = build_search_tree(word_list)
         self.wrong_letters = set()
-        self.guesses = 0 #TODO: Guesses should grab from a user file, so that it tracks play throughout the day.
+        self.guesses = 0
         self.error_flag = False
         self.help_flag = False
 

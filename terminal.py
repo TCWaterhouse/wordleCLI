@@ -21,11 +21,30 @@ class terminal:
         for line in terminal.keys:    
             key_line = ""
             for char in line:
-                if char in wrong_letters:
+                if char.strip() in wrong_letters:
                     key_line += (terminal.bg.black + terminal.fg.black + " " + char + " " + terminal.bg.reset)
                 else:
                     key_line += (terminal.bg.lightgrey + " " + char + " " + terminal.bg.reset)
             print(key_line)
+
+    def welcome_message():
+        print("Welcome to the daily world game!")
+        print("Get 6 chances to guess a 5 letter word")
+        print("Type 'help' to see which letters you've used but are not in today's word")
+        print("========================================================================")
+
+    def victory_message(guesses: int):
+        print("========================================================================")
+        if guesses == 1:
+            print(f"Genius! You completed today's puzzle in {guesses} guess!")
+        else:
+            print(f"Congratulations! You completed today's puzzle in {guesses} guesses!")
+        print("Come back tomorrow for a new puzzle!")
+
+    def failure_message():
+        print("========================================================================")
+        print("You've ran out of guesses!")
+        print("Come back tomorrow for another go")
 
     class fg:
         black = "\033[30m"
