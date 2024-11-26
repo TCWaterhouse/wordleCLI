@@ -52,6 +52,7 @@ class Wordle:
         self.wrong_letters = set()
         self.guesses = 0 #TODO: Guesses should grab from a user file, so that it tracks play throughout the day.
         self.error_flag = False
+        self.help_flag = False
 
     def check_guess(self, word: str):
         '''Checks to see if guess is valid. If it is, then it returns a list of the correct 5 ANSI colour escape codes'''
