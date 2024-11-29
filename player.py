@@ -2,11 +2,12 @@ import os
 import pickle
 
 from terminal import Terminal
+from path import PATH
 
 
 def load_player():
-    if os.path.exists("data/player.dat"):
-        with open("data/player.dat", "rb") as f:
+    if os.path.exists(f"{PATH}data/player.dat"):
+        with open(f"{PATH}data/player.dat", "rb") as f:
             return pickle.load(f)
     else:
         print("Hey! It looks like this is your first time playing, what's your name?")
@@ -16,7 +17,7 @@ def load_player():
         return Player(name)
     
 def save_player(player):
-    with open("data/player.dat", "wb") as f:
+    with open(f"{PATH}data/player.dat", "wb") as f:
         pickle.dump(player, f)
 
 class Player:

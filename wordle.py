@@ -3,6 +3,7 @@ import datetime
 
 from trie import Trie
 from terminal import Terminal
+from path import PATH
 
 
 # Ensure that the words are always shuffled the same way
@@ -11,7 +12,7 @@ random.seed(69)
 def get_answer_list() -> list[str]:
     '''Returns the answer list after doing some basic QA and shuffling'''
     answers_list = []
-    with open("data/en_5words_answers.txt", "r") as p:
+    with open(f"{PATH}data/en_5words_answers.txt", "r") as p:
         for line in p:
             answers_list.append(line.strip())
     answers_list = [word.lower() for word in answers_list if len(word) == 5 and word.isalpha()]
@@ -21,7 +22,7 @@ def get_answer_list() -> list[str]:
 def get_supplemental_list() -> list[str]:
     '''Returns the supplement list after doing some basic QA'''
     supplemental_list = []
-    with open("data/en_5words_supplement.txt", "r") as p:
+    with open(f"{PATH}data/en_5words_supplement.txt", "r") as p:
         for line in p:
             supplemental_list.append(line.strip())
     supplemental_list = [word.lower() for word in supplemental_list if len(word) == 5 and word.isalpha()]
