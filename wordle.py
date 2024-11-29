@@ -2,7 +2,7 @@ import random
 import datetime
 
 from trie import Trie
-from terminal import terminal
+from terminal import Terminal
 
 
 # Ensure that the words are always shuffled the same way
@@ -61,24 +61,24 @@ class Wordle:
         self.guesses += 1
 
         if word == self.todays_word:
-            colours = [terminal.bg.green, terminal.bg.green, terminal.bg.green, terminal.bg.green, terminal.bg.green]
+            colours = [Terminal.bg.green, Terminal.bg.green, Terminal.bg.green, Terminal.bg.green, Terminal.bg.green]
             return colours, True
         else:
             colours = []
             char_list = self.get_char_list()
             for i in range(5):
                 if word[i] not in self.todays_word:
-                    colours.append(terminal.bg.darkgrey)
+                    colours.append(Terminal.bg.darkgrey)
                     self.wrong_letters.add(word[i])
                     continue
                 elif word[i] not in char_list:
-                    colours.append(terminal.bg.darkgrey)
+                    colours.append(Terminal.bg.darkgrey)
                     continue
                 elif word[i] == self.todays_word[i]:
-                    colours.append(terminal.bg.green)
+                    colours.append(Terminal.bg.green)
                     continue
                 else:
-                    colours.append(terminal.bg.yellow)
+                    colours.append(Terminal.bg.yellow)
                     char_list.remove(word[i])
             return colours, False
 

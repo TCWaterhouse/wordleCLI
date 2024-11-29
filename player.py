@@ -1,7 +1,7 @@
 import os
 import pickle
 
-from terminal import terminal
+from terminal import Terminal
 
 
 def load_player():
@@ -11,8 +11,8 @@ def load_player():
     else:
         print("Hey! It looks like this is your first time playing, what's your name?")
         name = input()
-        terminal.clear_line()
-        terminal.clear_line()
+        print("\033[A                                                                                                     \033[A")
+        print("\033[A                                                                                                     \033[A")
         return Player(name)
     
 def save_player(player):
@@ -23,7 +23,7 @@ class Player:
     def __init__(self, name: str):
         self.name = name
         self.played = 0
-        self.win_percentage = 0
+        self.wins = 0
         self.current_streak = 0
         self.max_streak = 0
         self.guess_distribution = {1:0, 2:0, 3:0, 4:0, 5:0, 6:0}

@@ -1,9 +1,11 @@
 from player import *
 from wordle import *
-from terminal import terminal
+from terminal import Terminal
 
 def main():
+    player = load_player()
     game = Wordle()
+    terminal = Terminal(player, game)
     terminal.welcome_message()
 
     while game.guesses < 6:
@@ -18,8 +20,8 @@ def main():
             if game.error_flag:
                 terminal.clear_line()
                 game.error_flag = False
-            if guess.lower() == "help":
-                terminal.show_keys(game.wrong_letters)
+            if guess.lower() == "help" or guess.lower() == "h":
+                terminal.show_keys()
                 game.help_flag = True
                 continue
             if len(guess) != 5:
@@ -30,13 +32,16 @@ def main():
             colours, game_over = game.check_guess(guess)
             terminal.print_guess(guess, colours)
             if game_over:
-                terminal.victory_message(game.guesses)
+                terminal.victory_message()
+                save_player(player)
                 quit()
         except Exception as e:
             game.error_flag = True
             print(e)
 
     terminal.failure_message()
+    save_player(player)
+    quit()
 
 if __name__ == "__main__":
     main()
