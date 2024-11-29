@@ -18,6 +18,7 @@ class Terminal:
             )
         
     def print_stats(self):
+        print("========================================================================")
         print(f"Played: {self.player.played}, Win%: {(self.player.wins/self.player.played*100):.0f}, Current Streak: {self.player.current_streak}, Max Streak: {self.player.max_streak}")
         print("========================================================================")
         for i in range(1, 7):
@@ -43,7 +44,6 @@ class Terminal:
 
     def check_stats(self):    
         print("Would you like to see your stats? (y/n)")
-        print("========================================================================")
         x = input()
         self.clear_line()
         self.clear_line()
