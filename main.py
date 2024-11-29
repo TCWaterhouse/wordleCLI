@@ -1,3 +1,4 @@
+from player import *
 from wordle import *
 from terminal import terminal
 

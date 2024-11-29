@@ -13,9 +13,12 @@ class terminal:
               colours[4], word[4],
               terminal.bg.reset
             )
+        
+    def print_stats(player):
+        pass
     
     def clear_line():
-        print("\033[A                                       \033[A")
+        print("\033[A                                                                                                     \033[A")
 
     def show_keys(wrong_letters: set):
         for line in terminal.keys:    
@@ -27,11 +30,23 @@ class terminal:
                     key_line += (terminal.bg.lightgrey + " " + char + " " + terminal.bg.reset)
             print(key_line)
 
-    def welcome_message():
-        print("Welcome to the daily world game!")
-        print("Get 6 chances to guess a 5 letter word")
-        print("Type 'help' to see which letters you've used but are not in today's word")
-        print("========================================================================")
+    def welcome_message(player, wordle):
+        if player.last_played == wordle.todays_index:
+            print(f"Hi {player.name} you've already tried today's puzzle")
+            print("Would you like to see your stats? (y/n)")
+            print("========================================================================")
+            x = input()
+            terminal.clear_line()
+            if x.lower() == "y":
+                terminal.print_stats(player)
+                print("========================================================================")
+            print("Come back tomorrow for a new puzzle!")
+            quit()
+        else:
+            print(f"Welcome {player.name} to the daily world game!")
+            print("Get 6 chances to guess a 5 letter word")
+            print("Type 'help' to see which letters you've used but are not in today's word")
+            print("========================================================================")
 
     def victory_message(guesses: int):
         print("========================================================================")
