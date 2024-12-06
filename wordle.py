@@ -77,6 +77,7 @@ class Wordle:
                     continue
                 elif word[i] == self.todays_word[i]:
                     colours.append(Terminal.bg.green)
+                    char_list.remove(word[i])
                     continue
                 else:
                     colours.append(Terminal.bg.yellow)
